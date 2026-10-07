@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VIỆT VIBE - Nền tảng Việt Phục Remix 2D kết hợp AI Gemini cho Gen Z">
+  <title>VIỆT VIBE · Remix Cổ Phục Gen Z</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="navbar">
+  <div class="brand"><span class="brand-mark">✦</span><span>VIỆT VIBE</span><small>BETA</small></div>
+  <nav class="nav-tabs" aria-label="Điều hướng">
+    <button class="tab-btn active" data-tab="tab-studio">Studio</button>
+    <button class="tab-btn" data-tab="tab-ai">AI Creator</button>
+    <button class="tab-btn" data-tab="tab-check">Kiểm định</button>
+    <button class="tab-btn" data-tab="tab-social">Lookbook</button>
+  </nav>
+</header>
+
+<main class="container">
+  <section id="tab-studio" class="tab-content active">
+    <div class="hero-copy">
+      <div><span class="eyebrow">VIỆT PHỤC × STREETWEAR × AI</span><h1>Remix di sản,<br><em>mặc theo cách bạn.</em></h1></div>
+      <p>Thử đồ 2D, phối cổ phục với đồ hiện đại và dùng Gemini để sáng tạo những món chưa từng có trong tủ.</p>
+    </div>
+
+    <div class="studio-layout">
+      <section class="panel avatar-panel">
+        <div class="panel-heading"><div><span class="eyebrow">AVATAR</span><h2>Phòng thử đồ</h2></div><span id="equipped-count" class="pill">0 món</span></div>
+        <div id="avatar-canvas" aria-label="Avatar paper-doll"></div>
+        <div class="avatar-controls">
+          <label>Da <input id="skin-color" type="color" value="#fbcfe8"></label>
+          <label>Chiều cao <input id="avatar-height" type="number" min="130" max="210" value="170"> cm</label>
+          <label>Cân nặng <input id="avatar-weight" type="number" min="35" max="150" value="60"> kg</label>
+          <label>Dáng
+            <select id="body-shape">
+              <option value="donghocat">Cân đối</option><option value="chu_nhat">Chữ nhật</option>
+              <option value="tam_giac">Tam giác</option><option value="qua_tao">Quả táo</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel inventory-col">
+        <div class="panel-heading"><div><span class="eyebrow">WARDROBE</span><h2>Tủ đồ</h2></div></div>
+        <div class="filter-row" id="inv-filters">
+          <button class="flt-btn active" data-slot="top">Áo</button>
+          <button class="flt-btn" data-slot="bottom">Quần/Váy</button>
+          <button class="flt-btn" data-slot="shoes">Giày</button>
+          <button class="flt-btn" data-slot="hat">Mũ/Khăn</button>
+          <button class="flt-btn" data-slot="accessory">Phụ kiện</button>
+        </div>
+        <div class="type-row">
+          <button class="type-btn active" data-type="all">Tất cả</button><button class="type-btn" data-type="traditional">Truyền thống</button>
+          <button class="type-btn" data-type="modern">Hiện đại</button><button class="type-btn" data-type="ai">✨ AI</button>
+        </div>
+        <div class="grid-items" id="inventory-grid"></div>
+        <div class="studio-actions">
+          <input type="text" id="lookbook-title" maxlength="100" placeholder="Tên set đồ để đăng...">
+          <button class="btn primary" id="btn-post-lookbook">Đăng Lookbook</button>
+          <button class="btn outline" id="btn-open-check">Kiểm định AI</button>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section id="tab-ai" class="tab-content hidden">
+    <div class="two-col">
+      <section class="panel">
+        <span class="eyebrow">GEMINI FASHION CREATOR</span><h2>Biến ý tưởng thành món đồ</h2>
+        <p class="subtitle">Mô tả bằng tiếng Việt. Gemini sẽ tối ưu prompt tiếng Anh và tạo item cho tủ đồ — chạy trực tiếp trong trình duyệt của bạn.</p>
+        <div class="key-row">
+          <input type="password" id="gemini-key-input" placeholder="Dán Gemini API key của bạn vào đây">
+          <button class="btn outline" id="btn-save-key" type="button">Lưu key</button>
+        </div>
+        <p class="key-hint">Lấy key miễn phí tại <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> — key chỉ lưu trong trình duyệt của bạn.</p>
+        <textarea id="ai-prompt-input" rows="5" maxlength="2000" placeholder="Ví dụ: Áo tấc nam vải denim, viền neon xanh, cảm hứng cyberpunk nhưng vẫn giữ phom truyền thống..."></textarea>
+        <div class="btn-group"><button class="btn outline" id="btn-ai-optimize">Tối ưu Prompt</button><button class="btn primary" id="btn-ai-create">Tạo & thêm vào tủ</button></div>
+        <div id="ai-output" class="result-box hidden">
+          <span class="eyebrow">PROMPT ĐÃ TỐI ƯU</span><p id="ai-opt-text" class="prompt-box"></p>
+          <p id="ai-opt-color" class="text-gold"></p><p id="ai-opt-note"></p>
+        </div>
+        <div id="ai-created" class="created-box hidden"></div>
+      </section>
+      <aside class="panel tip-panel"><div class="orb">✦</div><h3>AI không phải thợ may</h3><p>Nó phân tích ý tưởng và tạo metadata cho món đồ 2D. Hình ảnh paper-doll hiện tại được render bằng SVG trong trình duyệt.</p><div class="mini-stat"><b>100%</b><span>Key nằm ở trình duyệt bạn</span></div><div class="mini-stat"><b>3×</b><span>model Gemini dự phòng</span></div></aside>
+    </div>
+  </section>
+
+  <section id="tab-check" class="tab-content hidden">
+    <div class="two-col">
+      <section class="panel">
+        <span class="eyebrow">VIỆT VIBE AI STYLIST</span><h2>Kiểm định văn hóa</h2>
+        <p class="subtitle">AI đánh giá set đang mặc theo hoàn cảnh và thông tin vóc dáng bạn đã nhập ở Studio.</p>
+        <select id="cultural-occasion">
+          <option value="Đi lễ chùa, lăng tẩm, di tích hoặc nơi thờ tự">Đi chùa / nơi tôn nghiêm</option>
+          <option value="Dạo phố, đi cafe, chụp ảnh nghệ thuật">Dạo phố / Cafe</option>
+          <option value="Dạ tiệc, sự kiện Prom">Dạ tiệc / Prom</option>
+          <option value="Sự kiện văn hóa, triển lãm">Sự kiện văn hóa</option>
+        </select>
+        <button class="btn primary wide" id="btn-run-check">Phân tích set đồ đang mặc</button>
+        <div id="check-result" class="hidden check-result">
+          <div class="score-row"><div class="score-circle"><span id="check-score">0</span><small>/100</small></div><div><span class="eyebrow">KẾT QUẢ</span><h3 id="check-status"></h3></div></div>
+          <div id="check-alert" class="alert-box hidden"></div><p id="check-review"></p><p id="check-advice" class="text-gold"></p>
+          <ul id="check-suggestions" class="list"></ul>
+        </div>
+      </section>
+      <aside class="panel cultural-note"><h3>Nguyên tắc chính</h3><ul><li>Nơi tôn nghiêm cần trang phục kín đáo, lịch sự.</li><li>Nhật Bình cần được phối thanh lịch, tránh phụ kiện phản cảm.</li><li>Dạo phố là không gian phù hợp để thử nghiệm cổ phục × streetwear.</li></ul></aside>
+    </div>
+  </section>
+
+  <section id="tab-social" class="tab-content hidden">
+    <div class="section-heading"><div><span class="eyebrow">COMMUNITY</span><h2>Lookbook cộng đồng</h2></div><button class="btn outline" id="btn-refresh-feed">Làm mới</button></div>
+    <div class="feed-grid" id="lookbook-feed"></div>
+  </section>
+</main>
+
+<div id="toast" class="toast hidden" role="status"></div>
+<div id="loading-overlay" class="loading hidden"><div class="spinner"></div><span>Đang xử lý...</span></div>
+
+<script src="js/items.js"></script>
+<script src="js/app.js"></script>
+<script src="js/avatar.js"></script>
+<script src="js/studio.js"></script>
+<script src="js/ai-gemini.js"></script>
+<script src="js/social.js"></script>
+</body>
+</html>

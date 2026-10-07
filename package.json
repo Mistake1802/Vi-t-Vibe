@@ -1,0 +1,18 @@
+{
+  "name": "viet-vibe",
+  "version": "1.0.0",
+  "description": "Nền tảng Việt Phục Remix 2D kết hợp AI Gemini cho Gen Z",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}

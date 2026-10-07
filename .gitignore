@@ -1,0 +1,4 @@
+node_modules/
+.env
+data/lookbooks.json
+.DS_Store

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Việt Phục Remix — Gen Z mặc Việt</title>
+  <meta name="description" content="Khám phá, hiểu và remix Việt phục theo sự kiện, phong cách cá nhân và vóc dáng.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grain"></div>
+
+  <header class="site-header">
+    <a class="logo" href="#home" data-route="home">
+      <span class="logo-mark">✦</span>
+      <span>VIỆT PHỤC <b>REMIX</b></span>
+    </a>
+    <nav class="main-nav">
+      <button data-route="home" class="nav-link active">Trang chủ</button>
+      <button data-route="discover" class="nav-link">Khám phá</button>
+      <button data-route="remix" class="nav-link">Remix Studio</button>
+      <button data-route="culture" class="nav-link">Culture Check</button>
+      <button data-route="lookbook" class="nav-link">Lookbook</button>
+    </nav>
+    <button class="header-save" data-route="lookbook">♡ <span id="headerCount">0</span></button>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="page-home" class="page active">
+      <div class="home-hero">
+        <div class="hero-copy">
+          <div class="eyebrow">VIỆT PHỤC × GEN Z</div>
+          <h1>Mặc truyền thống.<br><em>Sống theo cách bạn.</em></h1>
+          <p class="hero-lead">Việt Phục Remix giúp người trẻ khám phá Việt phục, hiểu đúng bối cảnh văn hóa và tự phối một outfit phù hợp với dịp, vóc dáng và cá tính.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-route="remix">Bắt đầu phối đồ <span>↗</span></button>
+            <button class="btn btn-ghost" data-route="discover">Tìm hiểu Việt phục</button>
+          </div>
+          <div class="hero-facts">
+            <div><strong>04+</strong><span>Nhóm Việt phục</span></div>
+            <div><strong>06</strong><span>Bối cảnh sử dụng</span></div>
+            <div><strong>∞</strong><span>Phong cách remix</span></div>
+          </div>
+        </div>
+        <div class="hero-art" aria-label="Minh họa người mẫu Việt phục">
+          <div class="art-circle c1"></div><div class="art-circle c2"></div>
+          <div class="hero-stamp"><b>01</b><span>REMIX<br>WITH RESPECT</span></div>
+          <div class="hero-model hero-model-female">
+            <div class="m-hair"></div><div class="m-head"></div><div class="m-neck"></div>
+            <div class="m-body ao-dai"><i></i></div><div class="m-arm a1"></div><div class="m-arm a2"></div>
+            <div class="m-leg l1"></div><div class="m-leg l2"></div><div class="m-shoe s1"></div><div class="m-shoe s2"></div>
+          </div>
+          <div class="hero-model hero-model-male">
+            <div class="m-hair"></div><div class="m-head"></div><div class="m-neck"></div>
+            <div class="m-body nam"></div><div class="m-arm a1"></div><div class="m-arm a2"></div>
+            <div class="m-leg l1"></div><div class="m-leg l2"></div><div class="m-shoe s1"></div><div class="m-shoe s2"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-heading compact">
+        <div><span class="eyebrow">WEBSITE LÀM GÌ?</span><h2>Từ hiểu đúng <em>đến mặc đẹp</em></h2></div>
+        <p>Một trải nghiệm liền mạch: chọn dịp → chọn Việt phục → điều chỉnh người mẫu → remix → kiểm tra văn hóa → lưu look.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card large">
+          <span class="feature-no">01</span><span class="feature-icon">⌁</span>
+          <h3>Khám phá Việt phục</h3>
+          <p>Đọc thông tin ngắn, dễ hiểu về áo dài, áo tứ thân, áo ngũ thân và áo bà ba; đi kèm bối cảnh sử dụng.</p>
+          <button data-route="discover">Xem danh mục →</button>
+        </article>
+        <article class="feature-card">
+          <span class="feature-no">02</span><span class="feature-icon">◌</span>
+          <h3>Chọn ngày lễ & sự kiện</h3>
+          <p>Tết, lễ hội, đám cưới, đi học, chụp ảnh hoặc đi chơi.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-no">03</span><span class="feature-icon">◒</span>
+          <h3>Remix theo vóc dáng</h3>
+          <p>Chọn nam/nữ và chỉnh chiều cao, cân nặng để model thay đổi tỷ lệ hiển thị.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-no">04</span><span class="feature-icon">✦</span>
+          <h3>Culture Check</h3>
+          <p>Nhắc bối cảnh, vùng miền và những điều nên tránh khi remix.</p>
+        </article>
+      </div>
+
+      <div class="mission-band">
+        <div class="mission-quote">“Gen Z không cần chọn giữa <em>truyền thống</em> và <em>hiện đại</em> — họ cần biết cách kết nối hai điều đó.”</div>
+        <div class="mission-tags"><span>#KhámPhá</span><span>#Remix</span><span>#HiểuĐúng</span></div>
+      </div>
+    </section>
+
+    <!-- DISCOVER -->
+    <section id="page-discover" class="page">
+      <div class="page-hero">
+        <div>
+          <div class="eyebrow">DISCOVER VIỆT PHỤC</div>
+          <h1>Biết mình đang<br><em>mặc điều gì.</em></h1>
+          <p>Từng loại Việt phục có câu chuyện, đặc trưng và bối cảnh riêng. Website biến phần kiến thức thành các thẻ ngắn gọn, dễ khám phá.</p>
+        </div>
+        <button class="btn btn-primary" data-route="remix">Remix ngay ↗</button>
+      </div>
+
+      <div class="category-tabs">
+        <button class="cat-tab active" data-cat="outfit">Việt phục</button>
+        <button class="cat-tab" data-cat="event">Ngày lễ & bối cảnh</button>
+      </div>
+
+      <div id="discoverOutfits" class="discover-grid"></div>
+      <div id="discoverEvents" class="discover-grid hidden"></div>
+    </section>
+
+    <!-- REMIX -->
+    <section id="page-remix" class="page">
+      <div class="studio-top">
+        <div>
+          <div class="eyebrow">REMIX STUDIO</div>
+          <h1>Tạo một look<br><em>là của bạn.</em></h1>
+        </div>
+        <div class="studio-intro">Mọi thay đổi trên panel bên trái được phản chiếu ngay vào model. Đây là khu vực Frontend tương tác chính.</div>
+      </div>
+
+      <div class="studio">
+        <aside class="control-panel">
+          <div class="control-section">
+            <div class="control-title"><span>01</span><b>Người mẫu</b></div>
+            <div class="gender-switch">
+              <button class="gender active" data-gender="female">Nữ</button>
+              <button class="gender" data-gender="male">Nam</button>
+            </div>
+            <div class="range-group">
+              <div><label>Chiều cao <strong id="heightText">165 cm</strong></label><input id="height" type="range" min="145" max="195" value="165"></div>
+              <div><label>Cân nặng <strong id="weightText">52 kg</strong></label><input id="weight" type="range" min="42" max="95" value="52"></div>
+            </div>
+            <div class="body-chip"><span>Vóc dáng hiển thị</span><strong id="bodyType">Thanh mảnh</strong></div>
+          </div>
+
+          <div class="control-section">
+            <div class="control-title"><span>02</span><b>Sự kiện</b></div>
+            <div id="eventButtons" class="option-grid"></div>
+          </div>
+
+          <div class="control-section">
+            <div class="control-title"><span>03</span><b>Việt phục</b></div>
+            <div id="outfitButtons" class="option-list"></div>
+          </div>
+
+          <div class="control-section">
+            <div class="control-title"><span>04</span><b>Remix</b></div>
+            <label class="small-label">Màu chủ đạo <span id="colorText">Đỏ son</span></label>
+            <div id="colorButtons" class="color-picker"></div>
+            <label class="small-label">Phong cách</label>
+            <div id="styleButtons" class="style-grid"></div>
+            <label class="small-label">Phụ kiện</label>
+            <select id="accessory">
+              <option value="none">Không thêm</option>
+              <option value="pearl">Ngọc trai</option>
+              <option value="bag">Túi mini</option>
+              <option value="flower">Hoa / khăn cài tóc</option>
+              <option value="fan">Quạt giấy</option>
+              <option value="brooch">Trâm / ghim</option>
+            </select>
+          </div>
+          <div class="weather-box">☀ <div><span>Thời tiết gợi ý</span><b id="weatherText">Nắng nhẹ · 27°C</b></div></div>
+        </aside>
+
+        <section class="model-panel">
+          <div class="model-toolbar">
+            <span><i class="live"></i> LIVE MODEL</span>
+            <div><button id="turnModel">↻ Xoay</button><button id="resetModel">Reset</button></div>
+          </div>
+          <div id="modelStage" class="model-stage">
+            <div class="stage-orbit"></div><div class="stage-orbit two"></div>
+            <div class="axis-label ax1">BODY / FIT</div><div class="axis-label ax2">VIỆT PHỤC</div>
+            <div id="model" class="model female">
+              <div class="model-shadow"></div>
+              <div class="head"><div class="face-eye e1"></div><div class="face-eye e2"></div><div class="face-mouth"></div></div>
+              <div class="hair"></div><div class="neck"></div>
+              <div class="torso"><div class="collar"></div><div class="seam"></div></div>
+              <div class="arm arm-l"></div><div class="arm arm-r"></div>
+              <div class="waist"></div><div class="bottom"></div>
+              <div class="leg leg-l"></div><div class="leg leg-r"></div>
+              <div class="shoe shoe-l"></div><div class="shoe shoe-r"></div>
+              <div id="modelAccessory" class="model-accessory"></div>
+            </div>
+          </div>
+
+          <div class="look-summary">
+            <div><span class="summary-tag">YOUR LOOK</span><h2 id="summaryTitle">Tết · Áo dài · Đỏ son</h2><p id="summaryText">Thanh lịch, trẻ trung và phù hợp không khí Tết.</p></div>
+            <div class="harmony"><strong id="score">92</strong><span>/100<br>HÀI HÒA</span></div>
+          </div>
+          <div class="recommend-row"><div>✓ <b id="fitText">Phom hiển thị phù hợp</b><span> dựa trên hồ sơ model</span></div><button id="cultureMini">Culture Check ↗</button></div>
+          <div class="studio-actions"><button id="saveLook" class="btn btn-primary">♡ Lưu vào Lookbook</button><button id="compareLook" class="btn btn-ghost">⇄ So sánh</button><button id="shareLook" class="btn btn-ghost">↗ Chia sẻ</button></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- CULTURE -->
+    <section id="page-culture" class="page">
+      <div class="page-hero">
+        <div>
+          <div class="eyebrow">CULTURE CHECK</div>
+          <h1>Remix có gu.<br><em>Hiểu đúng văn hóa.</em></h1>
+          <p>Culture Check là lớp thông tin giúp người dùng biết outfit nào phù hợp với dịp và đâu là ranh giới giữa “lấy cảm hứng” với “gán nhãn nguyên bản”.</p>
+        </div>
+        <div class="culture-score-card"><span>LOOK HIỆN TẠI</span><strong id="cultureScore">92</strong><small>/100</small></div>
+      </div>
+
+      <div class="culture-layout">
+        <article class="culture-feature">
+          <div class="feature-kicker">✓ PHÙ HỢP VỚI BỐI CẢNH</div>
+          <h2 id="cultureHeading">Áo dài · Tết</h2>
+          <p id="cultureMain">Áo dài phù hợp với không khí Tết và nhiều dịp lễ. Khi remix theo phong cách Gen Z, nên giữ phom dáng và tinh thần trang nhã của trang phục.</p>
+          <div class="culture-note">💡 <b>Gợi ý:</b> Phụ kiện nhỏ giúp hiện đại hóa outfit mà vẫn để Việt phục là điểm nhấn chính.</div>
+        </article>
+        <article class="culture-block"><span>01</span><h3>Nguồn gốc & đặc trưng</h3><p id="originText">Áo dài là một biểu tượng quen thuộc của trang phục Việt Nam và được sử dụng trong nhiều bối cảnh đời sống, học tập, lễ nghi và sự kiện.</p></article>
+        <article class="culture-block warning"><span>02</span><h3>Culture Warning</h3><p id="warningText">Không nên dùng một thiết kế hiện đại để khẳng định đó là hình thức duy nhất hoặc nguyên bản lịch sử của Việt phục.</p><div class="warning-label">⚠ ĐẶT ĐÚNG BỐI CẢNH</div></article>
+        <article class="culture-block"><span>03</span><h3>Vì sao outfit được điểm?</h3><div class="score-line"><i id="scoreLine"></i></div><p><b id="scoreSmall">92/100</b> — màu, phụ kiện và sự kiện đang chọn tạo tổng thể cân bằng.</p></article>
+      </div>
+
+      <div class="culture-principles"><div><b>1</b><span>Ghi rõ loại Việt phục</span></div><div><b>2</b><span>Nêu bối cảnh / vùng miền</span></div><div><b>3</b><span>Tách “nguyên bản” và “lấy cảm hứng”</span></div><div><b>4</b><span>Ưu tiên tôn trọng văn hóa</span></div></div>
+    </section>
+
+    <!-- LOOKBOOK -->
+    <section id="page-lookbook" class="page">
+      <div class="page-hero">
+        <div>
+          <div class="eyebrow">MY LOOKBOOK</div>
+          <h1>Những outfit<br><em>bạn đã tạo.</em></h1>
+          <p>Lưu những phiên bản bạn thích để so sánh trước khi chọn outfit cuối cùng.</p>
+        </div>
+        <button class="btn btn-primary" data-route="remix">Tạo look mới ↗</button>
+      </div>
+      <div id="lookbookGrid" class="lookbook-grid"></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="compareModal" class="modal">
+    <div class="modal-card">
+      <button id="closeModal" class="modal-close">×</button>
+      <div class="eyebrow">COMPARE LOOKS</div><h2>Đặt hai phương án cạnh nhau.</h2>
+      <div id="compareGrid" class="compare-grid"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,7 +1,14 @@
+// Chế độ chạy: 'static' (Pages) hoặc 'server' (server.js ghi đè js/config.js). Phần tử có data-only="..." chỉ giữ lại ở đúng chế độ.
+const MODE = window.VIETVIBE_MODE === 'server' ? 'server' : 'static';
+document.documentElement.dataset.mode = MODE;
+document.querySelectorAll('[data-only]').forEach(el => { if (el.dataset.only !== MODE) el.remove(); });
+
 const AppState = {
-  outfit: { top:null, bottom:null, shoes:null, hat:null, accessory:null },
+  outfit: { top:null, outer:null, bottom:null, shoes:null, hat:null, accessory:null },
   avatarStats: { gender:'không xác định', height:170, weight:60, bodyShape:'donghocat' },
   skinColor:'#fbcfe8',
+  // 'hybrid' = thân vector + đồ dùng ảnh nếu có · 'vector' = tất cả vector. Nhớ lựa chọn (giá trị cũ 'param' = 'vector').
+  avatarStyle: (() => { try { return ['vector', 'param'].includes(localStorage.getItem('vietvibe_avatar_style')) ? 'vector' : 'hybrid'; } catch { return 'hybrid'; } })(),
   activeTab:'tab-studio'
 };
 
@@ -32,7 +39,14 @@ document.getElementById('avatar-height').addEventListener('input', e => {
   AppState.avatarStats.height = Number(e.target.value) || 170;
   renderAvatar();
 });
-document.getElementById('avatar-weight').addEventListener('input', e => AppState.avatarStats.weight = Number(e.target.value) || 60);
+document.getElementById('avatar-weight').addEventListener('input', e => {
+  AppState.avatarStats.weight = Number(e.target.value) || 60;
+  renderAvatar();
+});
+document.getElementById('avatar-gender').addEventListener('change', e => {
+  AppState.avatarStats.gender = e.target.value;
+  renderAvatar();
+});
 document.getElementById('body-shape').addEventListener('change', e => {
   AppState.avatarStats.bodyShape = e.target.value;
   renderAvatar();

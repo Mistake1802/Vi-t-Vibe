@@ -6,6 +6,11 @@ const path = require('path');
 
 dotenv.config();
 
+// Dữ liệu dùng chung với frontend (prompt, danh sách model, extractJson, Lookbook mẫu)
+const { GEMINI_MODELS, SYSTEM_PROMPT_1, SYSTEM_PROMPT_2, extractJson, SEED_LOOKBOOKS } = require('./docs/js/shared.js');
+const { cultureCheck } = require('./docs/js/culture.js');   // luật kiểm định văn hóa (dùng chung với frontend)
+const WEB_DIR = path.join(__dirname, 'docs');   // frontend duy nhất (cũng là thư mục GitHub Pages)
+
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const DATA_DIR = path.join(__dirname, 'data');
@@ -13,34 +18,13 @@ const LOOKBOOK_FILE = path.join(DATA_DIR, 'lookbooks.json');
 
 app.use(cors());
 app.use(express.json({ limit: '100kb' }));
-app.use(express.static(path.join(__dirname, 'public')));
+// Frontend dùng chung với bản Pages; ở đây ghi đè config.js để bật chế độ 'server' (gọi /api/* thay vì Gemini trực tiếp)
+app.get('/js/config.js', (req, res) => {
+  res.type('application/javascript').send("window.VIETVIBE_MODE = 'server';\n");
+});
+app.use(express.static(WEB_DIR));
 
-const DEFAULT_LOOKBOOKS = [
-  {
-    id: 'lb_1',
-    author: 'GenZ_Stylist',
-    title: 'Cháy phố với Áo Tấc & Baggy',
-    likes: 12,
-    outfit: { top: 'top_aotac_1', bottom: 'bot_baggy_1', shoes: 'shoe_sneaker_1', hat: null, accessory: 'acc_cyber_1' },
-    timestamp: Date.now() - 2 * 86400000
-  },
-  {
-    id: 'lb_2',
-    author: 'Heritage_Lover',
-    title: 'Dạ tiệc Nhật Bình',
-    likes: 45,
-    outfit: { top: 'top_nhatbinh_1', bottom: 'bot_suonglua_1', shoes: 'shoe_guoc_1', hat: 'hat_khandong_1', accessory: 'acc_vongngoc_1' },
-    timestamp: Date.now() - 86400000
-  },
-  {
-    id: 'lb_3',
-    author: 'VietVibe_Studio',
-    title: 'Ngũ Thân Cyber đi cà phê',
-    likes: 28,
-    outfit: { top: 'top_nguthan_1', bottom: 'bot_jeanrach_1', shoes: 'shoe_boots_1', hat: 'hat_beret_1', accessory: 'acc_cyber_1' },
-    timestamp: Date.now() - 6 * 3600000
-  }
-];
+const DEFAULT_LOOKBOOKS = SEED_LOOKBOOKS;
 
 function ensureDataFile() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -108,56 +92,8 @@ app.post('/api/lookbooks/:id/like', (req, res) => {
 });
 
 // -------------------- GEMINI API --------------------
-const SYSTEM_PROMPT_1 = `Bạn là một AI Prompt Optimizer chuyên về thời trang Việt phục và minh họa 2D Flat Vector.
-
-Nhiệm vụ: Nhận một ý tưởng thời trang thô bằng tiếng Việt từ người dùng, phân tích đặc trưng văn hóa và dịch sang một Prompt tiếng Anh chi tiết, chuẩn cấu trúc cho các mô hình tạo ảnh (như Imagen / Midjourney / Stable Diffusion).
-
-YÊU CẦU ĐẶC BIỆT:
-- Bắt buộc phải có từ khóa: "2D flat fashion vector illustration, paper-doll outfit asset, isolated on clean white background, front view, clean crisp outlines".
-- Mô tả chi tiết chất liệu, đường may, hoa văn cổ truyền kết hợp hơi thở hiện đại.
-- suggested_color phải là mã hex hợp lệ.
-- Trả về JSON duy nhất:
-{
-  "original_prompt": "câu gốc tiếng Việt",
-  "heritage_category": "phân loại cổ phục hoặc phong cách",
-  "optimized_english_prompt": "câu lệnh tiếng Anh hoàn chỉnh",
-  "suggested_color": "#hex",
-  "design_rationale": "giải thích ngắn gọn về cách phối chất liệu"
-}`;
-
-const SYSTEM_PROMPT_2 = `Bạn là "Việt Vibe AI Stylist" - Chuyên gia nghiên cứu Cổ phục Việt Nam (triều Nguyễn, Lê) kiêm Stylist thời trang Gen Z.
-
-Nhiệm vụ: Kiểm duyệt và tư vấn các set đồ phối giữa cổ phục truyền thống và trang phục hiện đại.
-
-CÁC NGUYÊN TẮC VĂN HÓA BẮT BUỘC:
-1. Chốn tôn nghiêm (Chùa chiền, Lăng tẩm, Nơi thờ tự): Nghiêm cấm mặc áo cổ phục kết hợp quần short ngắn, váy quá ngắn hoặc quần rách tả tơi. Nếu phát hiện, BẮT BUỘC trả về status = "canh_bao" và nêu rõ lý do bảo vệ thuần phong mỹ tục.
-2. Phẩm phục cung đình (Áo Nhật Bình): Cổ áo hình chữ nhật và dải ngũ hành đại diện cho cấp bậc hoàng tộc cao quý. Cần phối với trang phục thanh lịch, không phối hở hang hoặc phụ kiện phản cảm.
-3. Không gian dạo phố/nghệ thuật: Khuyến khích sự sáng tạo lành mạnh như phối áo tấc với sneaker chunky, áo ngũ thân với chân váy dài hoặc quần baggy.
-
-Luôn trả về JSON hợp lệ, không kèm giải thích ngoài JSON:
-{
-  "status": "tuyet_voi" | "hop_le" | "canh_bao",
-  "score": 0,
-  "cultural_alert": "thông báo cảnh báo hoặc null",
-  "cultural_review": "đánh giá về mặt di sản và giá trị lịch sử",
-  "stylist_advice": "lời khuyên phối đồ dựa trên vóc dáng",
-  "suggestions": ["gợi ý 1", "gợi ý 2"]
-}`;
-
-const GEMINI_MODELS = ['gemini-flash-latest', 'gemini-2.5-flash', 'gemini-2.0-flash'];
-
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function extractJson(text) {
-  const match = String(text || '').match(/\{[\s\S]*\}/);
-  if (!match) throw new Error('Gemini không trả về JSON hợp lệ.');
-  try {
-    return JSON.parse(match[0]);
-  } catch {
-    throw new Error('Gemini trả về JSON nhưng dữ liệu không hợp lệ.');
-  }
 }
 
 async function callGemini(systemInstruction, userText) {
@@ -224,24 +160,26 @@ async function callGemini(systemInstruction, userText) {
   throw lastError || new Error('Không thể kết nối Gemini.');
 }
 
-function aiErrorResponse(res, error, prefix) {
+// Chuyển lỗi Gemini thành { status, message } thân thiện (dùng cho cả response lỗi lẫn aiError của cultural-check)
+function aiErrorInfo(error, prefix) {
   if (error.code === 'NO_KEY') {
-    return res.status(500).json({
-      error: 'Chưa cấu hình GEMINI_API_KEY. Hãy copy .env.example thành .env và dán API key Gemini vào.'
-    });
+    return { status: 500, message: 'Chưa cấu hình GEMINI_API_KEY. Hãy copy .env.example thành .env và dán API key Gemini vào.' };
   }
   if (error.status === 429 || error.status === 503) {
-    return res.status(503).json({
-      error: 'Gemini đang quá tải hoặc giới hạn lượt gọi. Hệ thống đã thử các model dự phòng nhưng chưa thành công. Vui lòng thử lại sau.'
-    });
+    return { status: 503, message: 'Gemini đang quá tải hoặc giới hạn lượt gọi. Hệ thống đã thử các model dự phòng nhưng chưa thành công. Vui lòng thử lại sau.' };
   }
   if (error.status === 401 || error.status === 403) {
-    return res.status(502).json({ error: 'API key Gemini không hợp lệ hoặc không có quyền dùng model này.' });
+    return { status: 502, message: 'API key Gemini không hợp lệ hoặc không có quyền dùng model này.' };
   }
   if (error.status === 400) {
-    return res.status(400).json({ error: 'Gemini từ chối yêu cầu. Hãy kiểm tra nội dung prompt.' });
+    return { status: 400, message: 'Gemini từ chối yêu cầu. Hãy kiểm tra nội dung prompt.' };
   }
-  return res.status(500).json({ error: `${prefix}: ${error.message}` });
+  return { status: 500, message: `${prefix}: ${error.message}` };
+}
+
+function aiErrorResponse(res, error, prefix) {
+  const { status, message } = aiErrorInfo(error, prefix);
+  return res.status(status).json({ error: message });
 }
 
 app.post('/api/ai/optimize-prompt', async (req, res) => {
@@ -283,6 +221,8 @@ app.post('/api/ai/create-item', async (req, res) => {
       category = 'hat'; icon = '👒';
     } else if (/(kính|vòng|quạt|túi|phụ kiện)/i.test(low)) {
       category = 'accessory'; icon = '💎';
+    } else if (/(khoác|choàng|blazer|jacket|vest)/i.test(low)) {
+      category = 'outer'; icon = '🧥';
     }
 
     const color = /^#[0-9a-f]{6}$/i.test(result.suggested_color || '') ? result.suggested_color : '#ec4899';
@@ -307,55 +247,44 @@ app.post('/api/ai/create-item', async (req, res) => {
 });
 
 app.post('/api/ai/cultural-check', async (req, res) => {
-  const { outfit, occasion, avatarStats } = req.body || {};
+  const { outfit, occasion, occasionId, avatarStats } = req.body || {};
   if (!outfit || typeof outfit !== 'object') {
     return res.status(400).json({ error: 'Set đồ không hợp lệ.' });
   }
 
-  const safeStats = avatarStats && typeof avatarStats === 'object'
+  const stats = avatarStats && typeof avatarStats === 'object'
     ? avatarStats
     : { gender: 'không xác định', height: 170, weight: 60, bodyShape: 'không xác định' };
+  const items = Object.fromEntries(Object.entries(outfit).filter(([, item]) => item && typeof item === 'object'));
 
-  const outfitDesc = Object.entries(outfit)
-    .filter(([, item]) => item)
-    .map(([slot, item]) => {
-      if (typeof item === 'object') {
-        return `- ${slot}: ${item.name || 'Món đồ không tên'} (${item.type || 'không rõ loại'}), màu ${item.defaultColor || item.color || 'không rõ'}, họa tiết ${item.pattern || 'không rõ'}`;
-      }
-      return `- ${slot}: ${item}`;
-    }).join('\n');
+  // Luật chạy trước và tự chốt status/score. Gemini chỉ viết phần giải thích; Gemini lỗi thì vẫn trả 200 kèm aiError.
+  const result = await cultureCheck({
+    outfit: items,
+    occasionId,
+    occasionLabel: occasion,
+    stats,
+    explain: async text => {
+      try { return await callGemini(SYSTEM_PROMPT_2, text); }
+      catch (error) { throw new Error(aiErrorInfo(error, 'Lỗi giải thích AI').message); }
+    }
+  });
 
-  const userText = `Hoàn cảnh: ${occasion || 'Không xác định'}
-Set đồ đang mặc:
-${outfitDesc || '- Không mặc gì'}
-
-Vóc dáng:
-- Giới tính: ${safeStats.gender || 'không xác định'}
-- Chiều cao: ${safeStats.height || 'không xác định'} cm
-- Cân nặng: ${safeStats.weight || 'không xác định'} kg
-- Dáng người: ${safeStats.bodyShape || 'không xác định'}`;
-
-  try {
-    const result = await callGemini(SYSTEM_PROMPT_2, userText);
-    const score = Math.min(100, Math.max(0, Number.parseInt(result.score, 10) || 0));
-    const status = ['tuyet_voi', 'hop_le', 'canh_bao'].includes(result.status) ? result.status : 'hop_le';
-
-    res.json({
-      status,
-      score,
-      occasion: occasion || '',
-      culturalAlert: result.cultural_alert ?? null,
-      culturalReview: result.cultural_review || '',
-      stylistAdvice: result.stylist_advice || '',
-      suggestions: Array.isArray(result.suggestions) ? result.suggestions : []
-    });
-  } catch (error) {
-    aiErrorResponse(res, error, 'Lỗi kiểm định AI');
-  }
+  res.json({
+    status: result.status,
+    score: result.score,
+    occasion: occasion || '',
+    occasionId: result.occasionId,
+    culturalAlert: result.alert,
+    findings: result.findings,
+    culturalReview: result.review,
+    stylistAdvice: result.advice,
+    suggestions: result.suggestions,
+    aiError: result.aiError
+  });
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(WEB_DIR, 'index.html'));
 });
 
 app.listen(PORT, () => {

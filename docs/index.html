@@ -32,10 +32,20 @@
       <section class="panel avatar-panel">
         <div class="panel-heading"><div><span class="eyebrow">AVATAR</span><h2>Phòng thử đồ</h2></div><span id="equipped-count" class="pill">0 món</span></div>
         <div id="avatar-canvas" aria-label="Avatar paper-doll"></div>
+        <div class="style-switch" role="group" aria-label="Kiểu avatar">
+          <button type="button" class="style-btn" data-style="hybrid">Ảnh + vector</button>
+          <button type="button" class="style-btn" data-style="vector">Chỉ vector</button>
+        </div>
+        <p id="style-hint" class="style-hint"></p>
         <div class="avatar-controls">
           <label>Da <input id="skin-color" type="color" value="#fbcfe8"></label>
           <label>Chiều cao <input id="avatar-height" type="number" min="130" max="210" value="170"> cm</label>
           <label>Cân nặng <input id="avatar-weight" type="number" min="35" max="150" value="60"> kg</label>
+          <label>Giới tính
+            <select id="avatar-gender">
+              <option value="không xác định">Trung tính</option><option value="nữ">Nữ</option><option value="nam">Nam</option>
+            </select>
+          </label>
           <label>Dáng
             <select id="body-shape">
               <option value="donghocat">Cân đối</option><option value="chu_nhat">Chữ nhật</option>
@@ -49,6 +59,7 @@
         <div class="panel-heading"><div><span class="eyebrow">WARDROBE</span><h2>Tủ đồ</h2></div></div>
         <div class="filter-row" id="inv-filters">
           <button class="flt-btn active" data-slot="top">Áo</button>
+          <button class="flt-btn" data-slot="outer">Áo khoác</button>
           <button class="flt-btn" data-slot="bottom">Quần/Váy</button>
           <button class="flt-btn" data-slot="shoes">Giày</button>
           <button class="flt-btn" data-slot="hat">Mũ/Khăn</button>
@@ -72,12 +83,13 @@
     <div class="two-col">
       <section class="panel">
         <span class="eyebrow">GEMINI FASHION CREATOR</span><h2>Biến ý tưởng thành món đồ</h2>
-        <p class="subtitle">Mô tả bằng tiếng Việt. Gemini sẽ tối ưu prompt tiếng Anh và tạo item cho tủ đồ — chạy trực tiếp trong trình duyệt của bạn.</p>
-        <div class="key-row">
+        <p class="subtitle" data-only="static">Mô tả bằng tiếng Việt. Gemini sẽ tối ưu prompt tiếng Anh và tạo item cho tủ đồ — chạy trực tiếp trong trình duyệt của bạn.</p>
+        <p class="subtitle" data-only="server">Mô tả bằng tiếng Việt. Backend sẽ gọi Gemini thật, tối ưu prompt tiếng Anh và tạo item cho tủ đồ.</p>
+        <div class="key-row" data-only="static">
           <input type="password" id="gemini-key-input" placeholder="Dán Gemini API key của bạn vào đây">
           <button class="btn outline" id="btn-save-key" type="button">Lưu key</button>
         </div>
-        <p class="key-hint">Lấy key miễn phí tại <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> — key chỉ lưu trong trình duyệt của bạn.</p>
+        <p class="key-hint" data-only="static">Lấy key miễn phí tại <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> — key chỉ lưu trong trình duyệt của bạn.</p>
         <textarea id="ai-prompt-input" rows="5" maxlength="2000" placeholder="Ví dụ: Áo tấc nam vải denim, viền neon xanh, cảm hứng cyberpunk nhưng vẫn giữ phom truyền thống..."></textarea>
         <div class="btn-group"><button class="btn outline" id="btn-ai-optimize">Tối ưu Prompt</button><button class="btn primary" id="btn-ai-create">Tạo & thêm vào tủ</button></div>
         <div id="ai-output" class="result-box hidden">
@@ -86,7 +98,7 @@
         </div>
         <div id="ai-created" class="created-box hidden"></div>
       </section>
-      <aside class="panel tip-panel"><div class="orb">✦</div><h3>AI không phải thợ may</h3><p>Nó phân tích ý tưởng và tạo metadata cho món đồ 2D. Hình ảnh paper-doll hiện tại được render bằng SVG trong trình duyệt.</p><div class="mini-stat"><b>100%</b><span>Key nằm ở trình duyệt bạn</span></div><div class="mini-stat"><b>3×</b><span>model Gemini dự phòng</span></div></aside>
+      <aside class="panel tip-panel"><div class="orb">✦</div><h3>AI không phải thợ may</h3><p>Nó phân tích ý tưởng và tạo metadata cho món đồ 2D. Hình ảnh paper-doll hiện tại được render bằng SVG trong trình duyệt.</p><div class="mini-stat" data-only="static"><b>100%</b><span>Key nằm ở trình duyệt bạn</span></div><div class="mini-stat" data-only="server"><b>100%</b><span>API key chỉ ở backend</span></div><div class="mini-stat"><b>3×</b><span>model Gemini dự phòng</span></div></aside>
     </div>
   </section>
 
@@ -94,17 +106,17 @@
     <div class="two-col">
       <section class="panel">
         <span class="eyebrow">VIỆT VIBE AI STYLIST</span><h2>Kiểm định văn hóa</h2>
-        <p class="subtitle">AI đánh giá set đang mặc theo hoàn cảnh và thông tin vóc dáng bạn đã nhập ở Studio.</p>
+        <p class="subtitle">Bộ luật văn hóa kiểm tra set đang mặc theo hoàn cảnh; AI giải thích thêm và tư vấn theo vóc dáng bạn đã nhập ở Studio.</p>
         <select id="cultural-occasion">
-          <option value="Đi lễ chùa, lăng tẩm, di tích hoặc nơi thờ tự">Đi chùa / nơi tôn nghiêm</option>
-          <option value="Dạo phố, đi cafe, chụp ảnh nghệ thuật">Dạo phố / Cafe</option>
-          <option value="Dạ tiệc, sự kiện Prom">Dạ tiệc / Prom</option>
-          <option value="Sự kiện văn hóa, triển lãm">Sự kiện văn hóa</option>
+          <option value="Đi lễ chùa, lăng tẩm, di tích hoặc nơi thờ tự" data-occasion="temple">Đi chùa / nơi tôn nghiêm</option>
+          <option value="Dạo phố, đi cafe, chụp ảnh nghệ thuật" data-occasion="street">Dạo phố / Cafe</option>
+          <option value="Dạ tiệc, sự kiện Prom" data-occasion="gala">Dạ tiệc / Prom</option>
+          <option value="Sự kiện văn hóa, triển lãm" data-occasion="culture">Sự kiện văn hóa</option>
         </select>
         <button class="btn primary wide" id="btn-run-check">Phân tích set đồ đang mặc</button>
         <div id="check-result" class="hidden check-result">
           <div class="score-row"><div class="score-circle"><span id="check-score">0</span><small>/100</small></div><div><span class="eyebrow">KẾT QUẢ</span><h3 id="check-status"></h3></div></div>
-          <div id="check-alert" class="alert-box hidden"></div><p id="check-review"></p><p id="check-advice" class="text-gold"></p>
+          <div id="check-alert" class="alert-box hidden"></div><div id="check-findings" class="findings"></div><p id="check-review"></p><p id="check-advice" class="text-gold"></p>
           <ul id="check-suggestions" class="list"></ul>
         </div>
       </section>
@@ -121,11 +133,16 @@
 <div id="toast" class="toast hidden" role="status"></div>
 <div id="loading-overlay" class="loading hidden"><div class="spinner"></div><span>Đang xử lý...</span></div>
 
+<script src="js/config.js"></script>
+<script src="js/shared.js"></script>
+<script src="js/culture.js"></script>
 <script src="js/items.js"></script>
 <script src="js/app.js"></script>
 <script src="js/avatar.js"></script>
 <script src="js/studio.js"></script>
-<script src="js/ai-gemini.js"></script>
+<script src="js/providers/static.js"></script>
+<script src="js/providers/server.js"></script>
+<script src="js/ai.js"></script>
 <script src="js/social.js"></script>
 </body>
 </html>
